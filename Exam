@@ -1,0 +1,51 @@
+(задание 6)
+
+import random
+
+
+class Worker:
+    list_departments = ['Management', 'Development', 'QA', 'Support']  # статический атрибут
+    list_status = ['Работает', 'Отпуск', 'Больничный', 'Уволен']  # статический атрибут
+
+    def __init__(self, surname, position, salary, department_index):
+        self.surname = surname
+        self.position = position
+        self.salary = salary
+        self.department = self.list_departments[department_index]
+        self.status = self.list_status[0]
+        self.all_payments = 0.0
+
+    def changeStatus(self, status_index):
+        self.status = self.list_status[status_index]
+
+    def payCalc(self):
+        if self.status == self.list_status[3]:  # уволен
+            print("Работник уволен, выплата не производится")
+            paynow = 0
+        elif self.status == self.list_status[2]:  # больничный
+            paynow = self.salary * 0.85
+        elif self.status == self.list_status[1]:  # отпуск
+            paynow = self.salary + random.randint(1000, 2000)
+        else:  # подразумеваем, что если не прошли все остальные статусы, то работник работает.
+            if self.department == self.list_departments[0]:  # департамент менеджер
+                paynow = self.salary + random.randint(1000, 2000)
+            else:  # остальные департаменты
+                paynow = self.salary + random.randint(0, 2000)
+
+        self.all_payments += paynow
+
+    def getAllPayments(self):
+        print(self.all_payments)
+
+
+Bob = Worker('Hawk', 'Trainee', 20000.0, 3)
+print(Bob.status)
+Bob.payCalc()
+Bob.payCalc()
+Bob.getAllPayments()
+
+Bob.changeStatus(3)
+print(Bob.status)
+Bob.payCalc()
+Bob.payCalc()
+Bob.getAllPayments()
